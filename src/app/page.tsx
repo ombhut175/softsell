@@ -8,6 +8,7 @@ import WhyChooseUs from '@/components/WhyChooseUs';
 import Testimonials from '@/components/Testimonials';
 import ContactForm from '@/components/ContactForm';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import ChatWidget from '@/components/ChatWidget';
 import { motion } from 'framer-motion';
 
 export default function Home() {
@@ -48,6 +49,9 @@ export default function Home() {
           <p>© {new Date().getFullYear()} SoftSell. All rights reserved.</p>
         </div>
       </footer>
+
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 }

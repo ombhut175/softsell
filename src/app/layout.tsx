@@ -84,7 +84,9 @@ export const metadata: Metadata = {
   verification: {
     google: "your-google-site-verification", // Add your Google verification code
     yandex: "your-yandex-verification", // Add your Yandex verification code
-    bing: "your-bing-verification", // Add your Bing verification code
+    other: {
+      "bing": "your-bing-verification", // Add your Bing verification code
+    }
   },
   alternates: {
     canonical: "https://softsell.com",
