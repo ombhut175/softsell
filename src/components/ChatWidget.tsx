@@ -4,8 +4,9 @@ import { useState, useRef, useEffect } from 'react';
 import { ChatOpenAI } from '@langchain/openai';
 import { PromptTemplate } from 'langchain/prompts';
 
-// Mocked API key - in production, use environment variables
-const OPENAI_API_KEY = 'mock-api-key';
+// Use a mock API key by default (in production, use environment variables)
+const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY || 'mock-api-key';
+const IS_MOCK = OPENAI_API_KEY === 'mock-api-key' || !OPENAI_API_KEY;
 
 // Sample questions that users might ask
 const EXAMPLE_QUESTIONS = [
@@ -15,6 +16,18 @@ const EXAMPLE_QUESTIONS = [
   'Can I get a refund?',
   'How do I contact support?'
 ];
+
+// Mock responses for demo purposes
+const MOCK_RESPONSES: Record<string, string> = {
+  'how do i sell my license': 'To sell your license, go to your dashboard, click on "List New License", fill out the details, set your price, and publish the listing.',
+  'what payment methods do you accept': 'We accept credit cards, PayPal, and bank transfers for most transactions.',
+  'how long does delivery take': 'License keys are usually delivered instantly after payment confirmation. Physical items may take 3-5 business days.',
+  'can i get a refund': 'Yes, we offer a 30-day money-back guarantee for most products. Please contact our support team for assistance.',
+  'how do i contact support': 'You can reach our support team via email at support@softsell.com or through the contact form on our website.',
+  'help': 'I can help with questions about selling licenses, payment methods, delivery, refunds, and contacting support. What would you like to know?',
+  'hello': 'Hello! How can I assist you with SoftSell today?',
+  'hi': 'Hi there! How can I help you with SoftSell today?',
+};
 
 interface Message {
   content: string;
@@ -48,26 +61,23 @@ export default function ChatWidget() {
     setIsLoading(true);
     
     try {
-      // In a real implementation, we would use the actual API key
-      if (OPENAI_API_KEY === 'mock-api-key') {
+      if (IS_MOCK) {
         // Mocked response for demo purposes
         setTimeout(() => {
-          const mockResponses: Record<string, string> = {
-            'How do I sell my license?': 'To sell your license, go to your dashboard, click on "List New License", fill out the details, set your price, and publish the listing.',
-            'What payment methods do you accept?': 'We accept credit cards, PayPal, and bank transfers for most transactions.',
-            'How long does delivery take?': 'License keys are usually delivered instantly after payment confirmation. Physical items may take 3-5 business days.',
-            'Can I get a refund?': 'Yes, we offer a 30-day money-back guarantee for most products. Please contact our support team for assistance.',
-            'How do I contact support?': 'You can reach our support team via email at support@softsell.com or through the contact form on our website.'
-          };
-          
-          // Default response if the exact question isn't in our mocked list
+          // Default response if no match is found
           let responseText = 'I don\'t have specific information on that yet. Please contact our support team for more detailed assistance.';
           
-          // Check if we have a mocked response for this question
-          for (const [question, answer] of Object.entries(mockResponses)) {
-            if (content.toLowerCase().includes(question.toLowerCase())) {
-              responseText = answer;
-              break;
+          // Check for exact matches first (case insensitive)
+          const normalizedQuery = content.toLowerCase().trim();
+          if (MOCK_RESPONSES[normalizedQuery]) {
+            responseText = MOCK_RESPONSES[normalizedQuery];
+          } else {
+            // Check for partial matches if no exact match
+            for (const [question, answer] of Object.entries(MOCK_RESPONSES)) {
+              if (normalizedQuery.includes(question)) {
+                responseText = answer;
+                break;
+              }
             }
           }
           
@@ -145,6 +155,7 @@ export default function ChatWidget() {
           {/* Header */}
           <div className="bg-blue-600 text-white p-3 rounded-t-lg">
             <h3 className="font-semibold">SoftSell Support</h3>
+            {IS_MOCK && <p className="text-xs mt-1 opacity-75">(Demo Mode)</p>}
           </div>
 
           {/* Messages container */}
