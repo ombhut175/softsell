@@ -1,0 +1,45 @@
+{
+  "name": "SoftSell - Software License Marketplace",
+  "short_name": "SoftSell",
+  "description": "Sell your unused software licenses quickly and securely",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "marketplace"],
+  "screenshots": [
+    {
+      "src": "/screenshot1.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "SoftSell Homepage"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Sell License",
+      "short_name": "Sell",
+      "description": "Start selling your software license",
+      "url": "/sell",
+      "icons": [{ "src": "/sell-icon.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+} 
